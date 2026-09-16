@@ -23,8 +23,18 @@ public class RequestHandler extends Thread {
             BufferedReader br = new BufferedReader(new InputStreamReader(in, "UTF-8"));
             String line = br.readLine();
             log.debug("request line : {}", line);
+
+            if(line == null) {
+                return;
+            }
+
+            while(!line.equals("")) {
+                line = br.readLine();
+                log.debug("header : {}", line);
+            }
+
             DataOutputStream dos = new DataOutputStream(out);
-            byte[] body = "Hello World".getBytes();
+            byte[] bytes = "Hello World".getBytes();
             response200Header(dos, body.length);
             responseBody(dos, body);
         } catch (IOException e) {
