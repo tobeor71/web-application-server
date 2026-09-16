@@ -1,6 +1,6 @@
-import model.User;
-
 package webserver;
+
+import model.User;
 
 import java.io.*;
 import java.net.Socket;
