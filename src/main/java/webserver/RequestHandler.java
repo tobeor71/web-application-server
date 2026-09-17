@@ -38,15 +38,15 @@ public class RequestHandler extends Thread {
             }
 
             String[] tokens = line.split(" ");
-//            int contentLength = 0;
+            int contentLength = 0;
             boolean logined = false;
 
             while(!line.equals("")) {
                 log.debug("header : {}", line);
                 line = br.readLine();
-//                if(line.contains("Content-Length")) {
-//                    contentLength = getContentLength(line);
-//                }
+                if(line.contains("Content-Length")) {
+                    contentLength = getContentLength(line);
+                }
 
                 if(line.contains("Cookie")) {
                     logined = isLogin(line);
