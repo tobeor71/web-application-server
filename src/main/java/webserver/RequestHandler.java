@@ -51,6 +51,7 @@ public class RequestHandler extends Thread {
                 }
 
                 if(line.contains("Cookie")) {
+                    log.debug("Cookie line : {}", line);
                     logined = isLogin(line);
                 }
 
