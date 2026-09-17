@@ -53,6 +53,8 @@ public class RequestHandler extends Thread {
                 if(line.contains("Cookie")) {
                     logined = isLogin(line);
                 }
+
+//                line = br.readLine(); // 검사 후에 다음 줄 읽기
             }
 
             String url = tokens[1];
@@ -61,7 +63,11 @@ public class RequestHandler extends Thread {
                 Map<String, String> params = HttpRequestUtils.parseQueryString(body);
                 User user = new User(params.get("userId"), params.get("password"), params.get("name"), params.get("email"));
                 log.debug("user : {}", user);
+
                 DataBase.addUser(user);
+
+                DataOutputStream dos = new DataOutputStream(out);
+                response302Header(dos, "/index.html");
             } else if("/user/login".equals(url)) {
                 String body = IOUtils.readData(br, contentLength);
                 Map<String, String> params = HttpRequestUtils.parseQueryString(body);
@@ -83,11 +89,9 @@ public class RequestHandler extends Thread {
                     responseResource(out, "/user/login.html");
                     return;
                 }
-                log.debug("1111111111111111111111111111111");
+
                 Collection<User> users = DataBase.findAll();
-                log.debug("2222222222222222222222222222222");
                 StringBuilder sb = new StringBuilder();
-                log.debug("3333333333333333333333333333333");
 
                 sb.append("<table border='1'>");
                 for(User user : users) {
