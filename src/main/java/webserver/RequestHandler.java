@@ -41,7 +41,7 @@ public class RequestHandler extends Thread {
             int contentLength = 0;
             boolean logined = false;
 
-            while(line != null && !line.equals("")) {
+            while(!line.equals("")) {
                 log.debug("header_line : {}", line);
                 line = br.readLine();
 
@@ -53,8 +53,6 @@ public class RequestHandler extends Thread {
                 if(line.contains("Cookie")) {
                     logined = isLogin(line);
                 }
-
-//                line = br.readLine(); // 검사 후에 다음 줄 읽기
             }
 
             String url = tokens[1];
@@ -62,7 +60,9 @@ public class RequestHandler extends Thread {
                 String body = IOUtils.readData(br, contentLength);
                 Map<String, String> params = HttpRequestUtils.parseQueryString(body);
                 User user = new User(params.get("userId"), params.get("password"), params.get("name"), params.get("email"));
+                log.debug("user : {}", user);
                 DataBase.addUser(user);
+                log.debug("1111111111111111111111111111111");
             } else if("/user/login".equals(url)) {
                 String body = IOUtils.readData(br, contentLength);
                 Map<String, String> params = HttpRequestUtils.parseQueryString(body);
