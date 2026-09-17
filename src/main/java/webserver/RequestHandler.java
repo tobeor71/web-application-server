@@ -41,7 +41,7 @@ public class RequestHandler extends Thread {
             int contentLength = 0;
             boolean logined = false;
 
-            while(!line.equals("")) {
+            while((line = br.readLine()) != null && !line.equals("")) {
                 log.debug("header_line : {}", line);
                 line = br.readLine();
 
