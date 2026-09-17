@@ -69,6 +69,7 @@ public class RequestHandler extends Thread {
                 String body = IOUtils.readData(br, contentLength);
                 Map<String, String> params = HttpRequestUtils.parseQueryString(body);
                 User user = DataBase.findUserById(params.get("userId"));
+                log.debug("user : {}", user);
                 if(user == null) {
                     responseResource(out, "/user/login_failed.html");
                     return;
