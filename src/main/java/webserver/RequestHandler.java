@@ -42,20 +42,21 @@ public class RequestHandler extends Thread {
             boolean logined = false;
 
             while((line = br.readLine()) != null && !line.equals("")) {
-                log.debug("header_line : {}", line);
-                line = br.readLine();
+                    log.debug("header_line : {}", line);
+                    line = br.readLine();
 
-                if(line.contains("Content-Length")) {
-                    contentLength = getContentLength(line);
-                    log.debug("contentLength : {}", contentLength);
-                }
+                    if(line.contains("Content-Length")) {
+                        contentLength = getContentLength(line);
+                        log.debug("contentLength : {}", contentLength);
+                    }
 
-                if(line.contains("Cookie")) {
-                    log.debug("Cookie line : {}", line);
-                    logined = isLogin(line);
-                }
+                    if(line.contains("Cookie")) {
+                        log.debug("Cookie line : {}", line);
+                        logined = isLogin(line);
+                    }
 
 //                line = br.readLine(); // 검사 후에 다음 줄 읽기
+                }
             }
 
             String url = tokens[1];
@@ -78,10 +79,13 @@ public class RequestHandler extends Thread {
                     responseResource(out, "/user/login_failed.html");
                     return;
                 }
-
+                log.debug("------------------------- 1 -------------------------");
                 if(user.getPassword().equals(params.get("password"))) {
+                    log.debug("------------------------- 2 -------------------------");
                     DataOutputStream dos = new DataOutputStream(out);
+                    log.debug("------------------------- 3 -------------------------");
                     response302LoginSuccessHeader(dos);
+                    log.debug("------------------------- 4 -------------------------");
                 }else {
                     responseResource(out, "/user/login_failed.html");
                 }
