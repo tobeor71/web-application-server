@@ -62,7 +62,6 @@ public class RequestHandler extends Thread {
                 User user = new User(params.get("userId"), params.get("password"), params.get("name"), params.get("email"));
                 log.debug("user : {}", user);
                 DataBase.addUser(user);
-                log.debug("1111111111111111111111111111111");
             } else if("/user/login".equals(url)) {
                 String body = IOUtils.readData(br, contentLength);
                 Map<String, String> params = HttpRequestUtils.parseQueryString(body);
@@ -84,9 +83,11 @@ public class RequestHandler extends Thread {
                     responseResource(out, "/user/login.html");
                     return;
                 }
-
+                log.debug("1111111111111111111111111111111");
                 Collection<User> users = DataBase.findAll();
+                log.debug("2222222222222222222222222222222");
                 StringBuilder sb = new StringBuilder();
+                log.debug("3333333333333333333333333333333");
 
                 sb.append("<table border='1'>");
                 for(User user : users) {
