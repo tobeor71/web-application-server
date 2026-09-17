@@ -53,6 +53,8 @@ public class RequestHandler extends Thread {
                 if(line.contains("Cookie")) {
                     logined = isLogin(line);
                 }
+
+//                line = br.readLine(); // 검사 후에 다음 줄 읽기
             }
 
             String url = tokens[1];
@@ -144,7 +146,7 @@ public class RequestHandler extends Thread {
     private void response302LoginSuccessHeader(DataOutputStream dos) {
         try{
             dos.writeBytes("HTTP/1.1 302 Redirect \r\n");
-            dos.writeBytes("Set-Cookie : logined=ture \r\n");
+            dos.writeBytes("Set-Cookie : logined=true \r\n");
             dos.writeBytes("Location: /index.html \r\n");
             dos.writeBytes("\r\n");
         } catch (Exception e) {
