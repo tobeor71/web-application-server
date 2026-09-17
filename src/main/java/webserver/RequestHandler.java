@@ -76,7 +76,6 @@ public class RequestHandler extends Thread {
                     responseResource(out, "/user/login_failed.html");
                 }
             } else if("/user/list".equals(url)) {
-                log.debug("-------------------------- 1 --------------------------");
                 if(!logined) {
                     responseResource(out, "/user/login.html");
                     return;
@@ -97,10 +96,26 @@ public class RequestHandler extends Thread {
                 DataOutputStream dos = new DataOutputStream(out);
                 response200Header(dos, body.length);
                 responseBody(dos, body);
+            }else if(url.endsWith(".css")) {
+                DataOutputStream dos = new DataOutputStream(out);
+                byte[] body = Files.readAllBytes(new File("./webapp" + url).toPath());
+                response200CssHeader(dos, body.length);
+                responseBody(dos, body);
             }else {
                 responseResource(out, url);
             }
         } catch (IOException e) {
+            log.error(e.getMessage());
+        }
+    }
+
+    private void response200CssHeader(DataOutputStream dos, int lengthOfBodyContent) {
+        try {
+            dos.writeBytes("HTTP/1.1 200 OK\r\n");
+            dos.writeBytes("Content-Type: text/css\r\n");
+            dos.writeBytes("Content-Length: " + lengthOfBodyContent + "\r\n");
+            dos.writeBytes("\r\n");
+        } catch (Exception e) {
             log.error(e.getMessage());
         }
     }
