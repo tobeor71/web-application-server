@@ -156,7 +156,7 @@ public class RequestHandler extends Thread {
 
     private void response302Header(DataOutputStream dos, String url) {
         try{
-            dos.writeBytes("HTTP/1.1 02 Redirect \r\n");
+            dos.writeBytes("HTTP/1.1 302 Redirect \r\n");
             dos.writeBytes("Location: "  + url + "\r\n");
             dos.writeBytes("\r\n");
         } catch (IOException e) {
