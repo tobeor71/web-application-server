@@ -54,14 +54,14 @@ public class RequestHandler extends Thread {
             }
 
             String url = tokens[1];
-            if("user/create".equals(url)) {
+            if("/user/create".equals(url)) {
                 String body = IOUtils.readData(br, contentLength);
                 Map<String, String> params = HttpRequestUtils.parseQueryString(body);
                 User user = new User(params.get("userId"), params.get("password"), params.get("name"), params.get("email"));
                 log.debug("user : {}", user);
                 DataOutputStream dos = new DataOutputStream(out);
                 response302Header(dos, "/index.html");
-            } else if("user/login".equals(url)) {
+            } else if("/user/login".equals(url)) {
                 String body = IOUtils.readData(br, contentLength);
                 Map<String, String> params = HttpRequestUtils.parseQueryString(body);
                 User user = DataBase.findUserById(params.get("userId"));
@@ -76,7 +76,7 @@ public class RequestHandler extends Thread {
                 }else {
                     responseResource(out, "/user/login_failed.html");
                 }
-            } else if("user/list".equals(url)) {
+            } else if("/user/list".equals(url)) {
                 if(!logined) {
                     responseResource(out, "/user/l0gin.html");
                     return;
@@ -102,7 +102,7 @@ public class RequestHandler extends Thread {
             }else {
                 responseResource(out, url);
             }
-
+/*
             if("/user/create".startsWith(url)) {
                 int indoex = url.indexOf("?");
                 String queryString = url.substring(indoex + 1);
@@ -116,6 +116,7 @@ public class RequestHandler extends Thread {
                 response200Header(dos, body.length);
                 responseBody(dos, body);
             }
+ */
         } catch (IOException e) {
             log.error(e.getMessage());
         }
