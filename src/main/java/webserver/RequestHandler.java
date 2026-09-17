@@ -82,7 +82,7 @@ public class RequestHandler extends Thread {
         }
     }
 
-    private void responseResource(Outputstream out, String url) throws IOException{
+    private void responseResource(OutputStream out, String url) throws IOException{
         DataOutputStream dos = new DataOutputStream(out);
         byte[] body = Files.readAllBytes(new File("./webapp" + url).toPath());
         response200Header(dos, body.length);
