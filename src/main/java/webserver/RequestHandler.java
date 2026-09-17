@@ -42,7 +42,7 @@ public class RequestHandler extends Thread {
             boolean logined = false;
 
             while(!line.equals("")) {
-                log.debug("header : {}", line);
+                log.debug("header111111 : {}", line);
                 line = br.readLine();
                 if(line.contains("Content-Length")) {
                     contentLength = getContentLength(line);
