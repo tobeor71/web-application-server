@@ -1,5 +1,6 @@
 package webserver;
 
+import db.DataBase;
 import model.User;
 
 import java.io.*;
@@ -54,6 +55,13 @@ public class RequestHandler extends Thread {
                 log.debug("user : {}", user);
                 DataOutputStream dos = new DataOutputStream(out);
                 response302Header(dos, "/index.html");
+            }else if("user/login".equals(url)) {
+                String body = IOUtils.readData(br, contentLength);
+                Map<String, String> params = HttpRequestUtils.parseQueryString(body);
+                User user = DataBase.findUserById(params.get("userId"));
+                if(user == null) {
+
+                }
             }
 
             if("/user/create".startsWith(url)) {
@@ -70,6 +78,24 @@ public class RequestHandler extends Thread {
                 responseBody(dos, body);
             }
         } catch (IOException e) {
+            log.error(e.getMessage());
+        }
+    }
+
+    private void responseResource(Outputstream out, String url) throws IOException{
+        DataOutputStream dos = new DataOutputStream(out);
+        byte[] body = Files.readAllBytes(new File("./webapp" + url).toPath());
+        response200Header(dos, body.length);
+        responseBody(dos, body);
+    }
+
+    private void response302LoginSuccessHeader(DataOutputStream dos) {
+        try{
+            dos.writeBytes("HTTP/1.1 302 Redirect \r\n");
+            dos.writeBytes("Set-Cookie : logined=ture \r\n");
+            dos.writeBytes("Location: /index.html \r\n");
+            dos.writeBytes("\r\n");
+        } catch (Exception e) {
             log.error(e.getMessage());
         }
     }
