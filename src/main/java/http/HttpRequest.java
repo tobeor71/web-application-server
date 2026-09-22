@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.common.net.HttpHeaders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,19 +18,20 @@ public class HttpRequest {
 
     private String method;
     private String path;
-    private Map<String, String> headers = new HashMap<>();
-    private Map<String, String> params = new HashMap<>();
     private RequestLine requestLine;
+
+    private HttpHeaders headers;
 
     public HttpRequest(InputStream in) {
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(in, "UTF-8"));
             String line = br.readLine();
-            if (line == null || line.trim().isEmpty()) {
-                return;
+            if (line == null) {
+                throw new IllegalStateException();
             }
 
             requestLine = new RequestLine(line);
+            request
 
             line = br.readLine();
             while (!line.equals("")) {
