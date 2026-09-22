@@ -16,14 +16,13 @@ public class RequestLine {
     private Map<String,String> params = new HashMap<String, String>();
 
     public RequestLine(String requestLine) {
-        private HttpMethod method;
         log.debug("request line: {}", requestLine);
         String[] tokens = requestLine.split(" ");
         if(tokens.length != 3) {
             throw new IllegalArgumentException(requestLine + "이 형식에 맞지 않습니다.");
         }
-        method = HttpMethod.valueOf(tokens[0]);
-        if(method == HttpMethod.POST) {
+        method = tokens[0];
+        if("POST".equals(method)) {
             path = tokens[1];
             return;
         }
@@ -37,7 +36,7 @@ public class RequestLine {
         }
     }
 
-    public HttpMethod getMethod() {
+    public String getMethod() {
         return method;
     }
 
