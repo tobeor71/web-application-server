@@ -24,7 +24,6 @@ public class HttpRequest {
     public HttpRequest(InputStream in) {
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(in, "UTF-8"));
-
             String line = br.readLine();
             if (line == null || line.trim().isEmpty()) {
                 return;
@@ -33,7 +32,7 @@ public class HttpRequest {
             requestLine = new RequestLine(line);
 
             line = br.readLine();
-            while (line != null && !line.equals("")) {
+            while (!line.equals("")) {
                 log.debug("header: {}", line);
                 String[] tokens = line.split(":");
                 headers.put(tokens[0].trim(), tokens[1].trim());
@@ -51,33 +50,12 @@ public class HttpRequest {
         }
     }
 
-    private void processRequestLine(String requestLine) {
-        log.debug("request line : {}", requestLine);
-        String[] tokens = requestLine.split(" ");
-        method = tokens[0];
-
-        if("POST".equals(method)) {
-            path = tokens[1];
-            return;
-        }
-
-        int index = tokens[1].indexOf("?");
-        if(index != -1) {
-            path = tokens[1];
-        } else {
-            path = tokens[1].substring(0, index);
-            params = HttpRequestUtils.parseQueryString(tokens[1].substring(index + 1));
-        }
-    }
-
     public String getMethod() {
-        //return method;
         return requestLine.getMethod();
     }
 
     public String getPath() {
-        //return path;
-        return requestLine.getPath();
+       return requestLine.getPath();
     }
 
     public String getHeader(String key) {
