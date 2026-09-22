@@ -11,7 +11,7 @@ import java.util.Map;
 import org.junit.Test;
 
 import util.HttpRequestUtils.Pair;
-import webserver.HttpRequest;
+import http.HttpRequest;
 
 public class HttpRequestUtilsTest {
     private String testDirectory = "./src/test/resources/";
