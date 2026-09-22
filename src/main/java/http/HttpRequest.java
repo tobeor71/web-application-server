@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import com.google.common.net.HttpHeaders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,7 +24,9 @@ public class HttpRequest {
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(in, "UTF-8"));
             requestLine = new RequestLine(createRequestLine(br));
-            requestParams.addBody(requestLine.get);
+            requestParams.addBody(requestLine.getQueryString());
+			headers = processHeaders(br);
+            requestParams.addBody(IOUtils.readData(br, headers.getContentLength()));
         } catch (IOException e) {
             log.error(e.getMessage());
         }
@@ -39,7 +40,16 @@ public class HttpRequest {
         return line;
     }
 
-    public String getMethod() {
+    private HttpHeaders processHeaders(BufferedReader br) throws IOException {
+        HttpHeaders headers = new HttpHeaders();
+        String line;
+        while(!(line = br.readLine()).equals("")) {
+            headers.add(line);
+        }
+        return headers;
+    }
+
+    public HttpMethod getMethod() {
         return requestLine.getMethod();
     }
 
@@ -47,12 +57,12 @@ public class HttpRequest {
        return requestLine.getPath();
     }
 
-    public String getHeader(String key) {
-        return headers.get(key);
+    public String getHeader(String name) {
+        return headers.getHeader(name);
     }
 
-    public String getParameter(String key) {
-        return params.get(key);
+    public String getParameter(String name) {
+        return requestParams.getParams(name);
     }
 }
 
