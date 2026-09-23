@@ -24,6 +24,7 @@ public class HttpResponse {
     public void addHeader(String key, String value) {
         headers.put(key, value);
     }
+
     public void forward(String url) {
         try {
             byte[] body = Files.readAllBytes(new File("./webapp" + url).toPath());
